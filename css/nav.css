@@ -1,0 +1,119 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 100%;
+    background-color: #57E389;
+    padding: 30px 0;
+    border-right: 2px solid #1EB654;
+    position: relative;
+}
+
+.profile-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.avatar {
+    width: 90px;
+    height: 90px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #178A40;
+    cursor: pointer;
+    color: #333;
+}
+
+.gear-icon {
+    display: none;
+    color: #178A40;
+}
+
+.avatar:hover .avatar-text {
+    display: none;
+}
+
+.avatar:hover .gear-icon {
+    display: block;
+}
+
+.menu-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 45px;
+    flex: 1;
+    margin-top: 20px;
+}
+
+.menu-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.menu-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #178A40;
+    transition: width 0.3s ease;
+}
+
+.menu-links a:hover::after {
+    width: 100%;
+}
+
+.toggle-btn {
+    position: absolute;
+    top: 135px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    background-color: white; 
+    border: 2px solid #1EB654;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 50;
+}
+
+.toggle-btn svg {
+    transition: transform 0.3s ease;
+}
+
+.sidebar.collapsed {
+    width: 90px;
+}
+
+.sidebar.collapsed .toggle-btn svg {
+    transform: rotate(180deg); 
+}
+
+.sidebar.collapsed .avatar {
+    width: 55px;
+    height: 55px;
+}
+
+.sidebar.collapsed .avatar-text {
+    display: none;
+}
+
+.sidebar.collapsed .menu-links a {
+    opacity: 0;
+    visibility: hidden;
+}
