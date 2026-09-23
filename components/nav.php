@@ -17,8 +17,16 @@
 		</div>
 	</div>
 	<nav class="menu-links" hx-target="#main-content" hx-swap="innerHTML">
-		<a href="index.php" hx-get="dashboard_content.php" hx-push-url="true">Dashboard</a>
-		<a href="tarjetas.php" hx-get="tarjetas_content.php" hx-push-url="true">Tarjetas</a>
+		<a href="#" 
+			hx-get="components/dashboard_content.php" 
+	 	    hx-target="#main-content"
+	 	    @click="isModalOpen = false">Dashboard</a>
+	 	    
+	 	<a href="#" 
+		    hx-get="components/tarjetas_content.php" 
+	 	    hx-target="#main-content"
+	 	    @click="isModalOpen = false">Tarjetas</a>
+		       
 		<a href="suscripciones.php" hx-get="suscripciones_content.php" hx-push-url="true">Suscripciones</a>
 		<a href="actividad.php" hx-get="actividad_content.php" hx-push-url="true">Actividad</a>
 		<a href="inversiones.php" hx-get="inversiones_content.php" hx-push-url="true">Inversiones</a>

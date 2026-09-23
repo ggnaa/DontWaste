@@ -1,8 +1,37 @@
-<? php session_start(); ?>
+<?php
+	// 1. Si la URL trae la orden de reset, destruimos la sesión ANTES de cualquier HTML
+	if (isset($_GET['action']) && $_GET['action'] === 'reset') {
+	    session_start();
+	    $_SESSION = array();
+	    session_destroy();
+	    
+	    // Redirigimos para limpiar la URL, pero JavaScript ya sabrá que se ejecutó
+	    header("Location: index.php");
+	    exit;
+	}
+?>
 
 <?php require 'components/header.php'; ?>
 
-<div class="app-container" x-data="{ isModalOpen: false, tipo: 'gasto' }">
+<script>
+        // Este código se ejecuta antes de que el usuario vea la página
+        // Comprobamos si es la primera vez que entra en esta pestaña
+        if (!sessionStorage.getItem('pagina_cargada')) {
+            // Guardamos la marca en el navegador de que ya entró
+            sessionStorage.setItem('pagina_cargada', 'true');
+            
+            // Forzamos el reset en PHP
+            window.location.href = "index.php?action=reset";
+        }
+
+        // DETECTAR F5: Si el usuario recarga la página, borramos la marca y recargamos con reset
+        window.addEventListener('beforeunload', function () {
+            // Al salir o recargar, borramos la marca para que el próximo inicio ejecute el reset
+            sessionStorage.removeItem('pagina_cargada');
+        });
+    </script>
+
+<div class="app-container" x-data="{ isModalOpen: false, isCardModalOpen: false, tipo: 'gasto' }">
 	<?php require 'components/nav.php'; ?>
 
 	<div class="main-wrapper">
@@ -53,7 +82,7 @@
 	            </div>
 	            
 	            <form class="modal-form"
-	            		hx-post="guardar_movimiento.php"
+	            		hx-post="processors/guardar_movimiento.php"
 	            		hx-target=".history-list"
 	            		hx-swap="afterbegin"
 	            		@htmx:after-request="if($event.detail.successful) { isModalOpen = false; $el.reset(); tipo = 'gasto'; }">
@@ -103,7 +132,69 @@
 	        </div>
 	    </div>
 	
+<!-- MODAL PARA AGREGAR TARJETA -->
+    <div class="modal-overlay" x-show="isCardModalOpen" style="display: none;" x-transition.opacity>
+        <div class="modal-content" @click.away="isCardModalOpen = false" x-show="isCardModalOpen" x-transition>
+            <div class="modal-header">
+                <h3>Vincular Tarjeta</h3>
+                <button class="close-btn" @click="isCardModalOpen = false">&times;</button>
+            </div>
+            
+            <form class="modal-form" 
+                  hx-post="processors/guardar_tarjeta.php" 
+                  hx-target="#lista-tarjetas" 
+                  hx-swap="afterbegin"
+                  @htmx:after-request="if($event.detail.successful) { isCardModalOpen = false; $el.reset(); }">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Marca</label>
+                        <select name="marca" required>
+                            <option value="visa">Visa</option>
+                            <option value="mastercard">Mastercard</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Últimos 4 números</label>
+                        <input type="text" 
+                        	name="numeros" 
+                        	placeholder="Ej: 4281" 
+                        	maxlength="4" 
+                        	required 
+                        	oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Titular</label>
+                        <input type="text" name="titular" placeholder="Ej: JUAN PEREZ" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Vencimiento</label>
+                        <input type="text" 
+                        	name="vencimiento" 
+                        	placeholder="MM/AA" 
+                        	maxlength="5" 
+                        	required 
+                        	oninput="let v = this.value.replace(/\D/g, ''); this.value = v.length > 2 ? v.slice(0,2) + '/' + v.slice(2,4) : v;">
+                	</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Límite de Crédito</label>
+                    <input type="number" name="limite" placeholder="$ 0.00" step="0.01" min="0" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Guardar Tarjeta</button>
+            </form>
+        </div>
+    </div>
+    
 </div>
+
+
+
 
 
 <?php require 'components/footer.php'; ?>
