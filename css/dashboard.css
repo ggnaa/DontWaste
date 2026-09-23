@@ -69,24 +69,39 @@
 .custom-legend {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: 10px;
-    gap: 8px;
+  	grid-template-columns: 1fr 1fr;
+    margin-top: 15px;
+    gap: 12px;
 }
 
 .legend-item {
     display: flex;
     align-items: center;
-    gap: 8px;
+	justify-content: flex-start;
+	padding: 8px 10px 8px 30px;
+    gap: 10px;
     font-size: 13px;
     color: #555;
     background: #f9f9f9;
-    padding: 6px 10px;
     border-radius: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    width: 100%;
+    transition: all 0.2s ease;
+	box-sizing: border-box;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
+
+.legend-item.highlight{
+	background-color: #333;
+	color: white;
+	transform: scale(1.05);
+}
+
+.legend-item.highlight .color-box{
+	border: 1px solid white;
+}
+
 
 .color-box {
     width: 16px;

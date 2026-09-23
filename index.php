@@ -1,3 +1,5 @@
+<? php session_start(); ?>
+
 <?php require 'components/header.php'; ?>
 
 <div class="app-container" x-data="{ isModalOpen: false, tipo: 'gasto' }">
