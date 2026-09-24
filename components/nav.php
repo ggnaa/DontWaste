@@ -20,12 +20,12 @@
 		<a href="#" 
 			hx-get="components/dashboard_content.php" 
 	 	    hx-target="#main-content"
-	 	    @click="isModalOpen = false">Dashboard</a>
+	 	    @click="isModalOpen = false; vistaActual = 'dashboard'">Dashboard</a>
 	 	    
 	 	<a href="#" 
 		    hx-get="components/tarjetas_content.php" 
 	 	    hx-target="#main-content"
-	 	    @click="isModalOpen = false">Tarjetas</a>
+	 	    @click="isModalOpen = false; vistaActual = 'tarjetas'">Tarjetas</a>
 		       
 		<a href="suscripciones.php" hx-get="suscripciones_content.php" hx-push-url="true">Suscripciones</a>
 		<a href="actividad.php" hx-get="actividad_content.php" hx-push-url="true">Actividad</a>

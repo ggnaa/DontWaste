@@ -1,4 +1,4 @@
-<?php
+}<?php
 session_start();
 
 // Recibimos los datos
@@ -57,3 +57,14 @@ usleep(300000);
 <p id="total-tarjetas" class="amount" hx-swap-oob="true"><?= $totalActivas ?></p>
 <p id="limite-total" class="amount" hx-swap-oob="true">$ <?= number_format($limiteTotal, 0, ',', '.') ?></p>
 <p id="empty-tarjetas-msg" hx-swap-oob="true" style="display: none;"></p>
+
+<!-- OOB Swap que actualiza el selector del modal de movimiento al instante -->
+<select name="metodo_pago" id="selector-metodo" :disabled="tipo !== 'gasto'" hx-swap-oob="true">
+	<option value="efectivo">Débito / Efectivo</option>
+	<?php
+	foreach($_SESSION['tarjetas'] as $index => $t){
+		$nombreTarjeta = ucfirst($t['marca']) . ' **** ' . $t['numeros'];
+		echo "<option value='tarjeta_{$index}'>Crédito: " . htmlspecialchars($nombreTarjeta) . "</option>";
+	}
+	?>
+</select>

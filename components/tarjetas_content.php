@@ -2,6 +2,7 @@
 session_start();
 
 $tarjetas = $_SESSION['tarjetas'] ?? [];
+$deudaTotal = $_SESSION['deuda'] ?? 0;
 
 $totalActivas = count($tarjetas);
 $limiteTotal = array_sum(array_column($tarjetas, 'limite'));
@@ -20,7 +21,7 @@ $limiteTotal = array_sum(array_column($tarjetas, 'limite'));
     </div>
     <div class="card">
         <h3>Deuda Pendiente (Tarjetas)</h3>
-        <p id="deuda-total" class="amount negative">- $ 0</p>
+        <p id="deuda-total" class="amount negative"> $ <?= number_format($deudaTotal, 0, ',','.') ?></p>
     </div>
 </div>
 

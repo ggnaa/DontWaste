@@ -31,7 +31,7 @@
         });
     </script>
 
-<div class="app-container" x-data="{ isModalOpen: false, isCardModalOpen: false, tipo: 'gasto' }">
+<div class="app-container" x-data="{ isModalOpen: false, isCardModalOpen: false, tipo: 'gasto', vistaActual: 'dashboard'}">
 	<?php require 'components/nav.php'; ?>
 
 	<div class="main-wrapper">
@@ -49,7 +49,7 @@
 				</svg>
 			</div>
 			<div class="top-bar-actions">
-				<button class="btn-primary" @click="isModalOpen = true">+ Nuevo</button>
+				<button class="btn-primary" x-show="vistaActual === 'dashboard'" @click="isModalOpen = true">+ Nuevo</button>
 				
 				<button aria-label="Dark Mode">
 					<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -125,6 +125,20 @@
 	                <div class="form-group">
 	                    <label>Descripción / Detalle</label>
 	                    <input type="text" name="descripcion" placeholder="Ej: Cena en pizzeria...">
+	                </div>
+
+	                <div class="form-group" x-show="tipo === 'gasto'">
+	                	<label>Método de Pago</label>
+	                	<select name="metodo_pago" id="selector-metodo" :disabled="tipo !== 'gasto'">
+	                		<option value="efectivo">Débito / Efectivo</option>
+	                		<?php
+	                		$tarjetasActivas = $_SESSION['tarjetas'] ?? [];
+	                		foreach($tarjetasActivas as $index => $t){
+	                			$nombreTarjeta = ucfirst($t['marca']) . ' **** ' . $t['numeros'];
+	                			echo "<option value='tarjeta_{$index}'>Crédito: " . htmlspecialchars($nombreTarjeta) . "</option>";
+	                		}
+	                		?>
+	                	</select>
 	                </div>
 	
 	                <button type="submit" class="btn-submit">Guardar Registro</button>

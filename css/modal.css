@@ -5,7 +5,7 @@
 	flex-direction: column;
 }
 
-.from-group input,
+.form-group input,
 .form-group select{
 	width: 100%;
 	box-sizing: border-box;
