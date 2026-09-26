@@ -46,11 +46,19 @@ if ($tipo === 'gasto') {
 	}
 	
     // Se suma a la categoría para que el chart siempre funcione.
+	if(strpos($metodoPAgo, 'tarjeta_') === 0){
+		$index = (int)str_replace('tarjeta_', '', $metodoPago);
+		if(isset($_SESSION['tarjetas'][$index])){
+			$_SESSION['tarjetas'][$index]['límite'] = max(0, $_SESSION['tarjetas'][$index]['limite'] - $monto);
+		}
+	}
+	
     if (array_key_exists($categoria, $_SESSION['categorias'])) {
         $_SESSION['categorias'][$categoria] += $monto;
     } else {
         $_SESSION['categorias']['Varios'] += $monto;
     }
+    
 } else {
     $_SESSION['ingresos'] += $monto;
 }
@@ -69,6 +77,9 @@ $claseAhorro = ($baseAhorro >= 0) ? 'positive' : 'negative';
 $signoAhorro = ($baseAhorro >= 0) ? '+ $' : '- $';
 $totalAhorroStr = $signoAhorro . ' ' . number_format(abs($baseAhorro), 0, ',', '.');
 $totalDeudaStr = '- $ ' . number_format($_SESSION['deuda'], 0, ',','.');
+
+$limiteTotal = isset($_SESSION['tarjteas']) ? array_sum(array_column($_SESION['tarjetas'], 'limite')) : 0;
+$totalLimiteStr = '$ ' . number_format($limiteTotal, 0, ',', '.');
 ?>
 
 <!-- Movimiento nuevo para el historial -->
@@ -87,6 +98,7 @@ $totalDeudaStr = '- $ ' . number_format($_SESSION['deuda'], 0, ',','.');
 <p id="total-ingresos" class="amount" hx-swap-oob="true"><?= $totalIngresosStr ?></p>
 <p id="total-ahorro" class="amount <?= $claseAhorro ?>" hx-swap-oob="true"><?= $totalAhorroStr ?></p>
 <p id="deuda-total" class="amount negative" hx-swap-oob="true"><?= $totalDeudaStr ?></p>
+<p id="limite-total" class="amount" hx-swap-oob="true"><?= $totalLimiteStr ?></p>
 
 <!-- OOB: Actualización dinámica del gráfico -->
 <div id="chart-updater" hx-swap-oob="true">

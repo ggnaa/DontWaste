@@ -31,7 +31,7 @@
         });
     </script>
 
-<div class="app-container" x-data="{ isModalOpen: false, isCardModalOpen: false, tipo: 'gasto', vistaActual: 'dashboard'}">
+<div class="app-container" x-data="{ isModalOpen: false, isCardModalOpen: false, tipo: 'gasto', vistaActual: 'dashboard', isSubModalOpen: false}">
 	<?php require 'components/nav.php'; ?>
 
 	<div class="main-wrapper">
@@ -136,7 +136,7 @@
 	                		foreach($tarjetasActivas as $index => $t){
 	                			$nombreTarjeta = ucfirst($t['marca']) . ' **** ' . $t['numeros'];
 	                			echo "<option value='tarjeta_{$index}'>Crédito: " . htmlspecialchars($nombreTarjeta) . "</option>";
-	                		}
+							}
 	                		?>
 	                	</select>
 	                </div>
@@ -204,9 +204,53 @@
             </form>
         </div>
     </div>
-    
-</div>
 
+    <!-- Modal para agregar Suscripcion -->
+    <div class="modal-overlay" x-show="isSubModalOpen" style="display: none;" x-transition.opacity>
+    	<div class="modal-content" @click.away="isSubModalOpen = false" x-show="isSubModalOpen" x-transition>
+    		<div class="modal-header">
+    			<h3>Nueva Suscripcion</h3>
+    			<button class="close-btn" @click="isSubModalOpen = false">&times;</button>
+    		</div>
+
+    		<form class="modal-form"
+    			hx-post="processors/guardar_suscripcion.php"
+    			hx-target="#main-content"
+    			hx-swap="innerHTML"
+    			@htmx:after-request="if($event.detail.successful) { isSubModalOpen = false; $el.reset(); }">
+
+    			<div class="form-group">
+    				<label>Plataforma</label>
+    				<select name="plataforma" required>
+    					<option value="Netflix">Netflix</option>
+    					<option value="Spotify">Spotify</option>
+    					<option value="Google Gemini">Google Gemini</option>
+    					<option value="Kick">Kick</option>
+    					<option value="HBO Max">HBO Max</option>
+    					<option value="Github Sponsors">Github Sponsors</option>
+    					<option value="Paramount+">Paramount+</option>
+    					<option value="iCloud+">iCloud+</option>
+    					<option value="Deezer">Deezer</option>
+    					<option value="Apple TV">Apple TV</option>
+    				</select>
+    			</div>
+
+    			<div class="form-row">
+    				<div class="form-group">
+    					<label>Día de cobro</label>
+    					<input type="number" name="dia" placeholder="Ej: 15" min="1" max="31" required>
+    				</div>
+    				<div class=form-group>
+    					<label>Costo (USD)</label>
+    					<input type="number" name="usd" placeholder="Ej: 8.99" step="0.01" min="0" required>
+    				</div>
+    			</div>
+
+    			<button type="submit" class="btn-submit">Guardar Suscripción</button>
+    		</form>
+    	</div>
+    </div>
+</div>
 
 
 
