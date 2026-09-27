@@ -7,7 +7,7 @@
 		
 	<div class="profile-section">
 		<div class="avatar">
-			<span class="avatar-text">Perfil</span>
+			<span class="avatar-text" id="nombre-usuario-nav"><?= htmlspecialchars($_SESSION['nombre_usuario'] ?? 'Usuario Demo') ?></span>
 			<div class="gear-icon">
 				<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<circle cx="12" cy="12" r="3"></circle>
@@ -37,7 +37,14 @@
 			hx-target="#main-content"
 			@click="isModalOpen = false; vistaActual = 'actividad'">Actividad</a>
 			
-		<a href="inversiones.php" hx-get="inversiones_content.php" hx-push-url="true">Inversiones</a>
-		<a href="configuracion.php" hx-get="configuracion_content.php" hx-push-url="true">Configuración</a>
+		<a href="#"
+			hx-get="components/inversiones_content.php"
+			hx-target="#main-content"
+			@click="isModalOpen = false; vistaActual = 'inversiones'">Inversiones</a>
+
+		<a href="#"
+			hx-get="components/configuracion_content.php"
+			hx-target="#main-content"
+			@click="isModalOpen = false; vistaActual = 'configuracion'">Configuración</a>
 	</nav>
 </aside>
