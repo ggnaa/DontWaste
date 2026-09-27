@@ -11,6 +11,7 @@
 	}
 ?>
 
+
 <?php require 'components/header.php'; ?>
 
 <script>
@@ -221,7 +222,8 @@
 
     			<div class="form-group">
     				<label>Plataforma</label>
-    				<select name="plataforma" required>
+    				<select name="plataforma" id="plataformas-disponibles" required>
+						<option value="" disabled selected>Elegí una plataforma...</option>
     					<option value="Netflix">Netflix</option>
     					<option value="Spotify">Spotify</option>
     					<option value="Google Gemini">Google Gemini</option>

@@ -97,3 +97,25 @@ $mis_suscripciones = $_SESSION['suscripciones'] ?? [];
 		</div>
 	</div>
 </div>
+
+<select name="plataforma" id="plataformas-disponibles" required hx-swap-oob="true">
+	<option value="" disabled selected>Elegí una plataforma...</option>
+	<?php
+	$todasLasPlataformas = [
+		'Netflix', 'Spotify', 'Google Gemini', 'Kick', 'HBO Max',
+		'Github Sponsors', 'Paramount+', 'iCloud+', 'Deezer', 'Apple TV'
+	];
+	$activas = array_column($mis_suscripciones, 'plataforma');
+
+	foreach($todasLasPlataformas as $plat){
+		if(!in_array($plat, $activas)){
+			echo "<option value=\"" . htmlspecialchars($plat) . "\">" . htmlspecialchars($plat) . "</option>";
+		}
+	}
+
+	foreach($activas as $activa){
+		echo "<option value=\"" . htmlspecialchars($activa) . "\" hidden>" . htmlspecialchars($activa) . "</option>";		
+	}
+	?>
+</select>	
+	

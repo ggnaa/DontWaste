@@ -31,7 +31,12 @@
 			hx-get="components/suscripciones_content.php" 
 			hx-target="#main-content"
 			@click="isModalOpen = false; vistaActual = 'suscripciones'">Suscripciones</a>
-		<a href="actividad.php" hx-get="actividad_content.php" hx-push-url="true">Actividad</a>
+
+		<a href="#"
+			hx-get="components/actividad_content.php"
+			hx-target="#main-content"
+			@click="isModalOpen = false; vistaActual = 'actividad'">Actividad</a>
+			
 		<a href="inversiones.php" hx-get="inversiones_content.php" hx-push-url="true">Inversiones</a>
 		<a href="configuracion.php" hx-get="configuracion_content.php" hx-push-url="true">Configuración</a>
 	</nav>

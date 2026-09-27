@@ -131,12 +131,10 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
-    overflow-y: auto; /* Habilita el scroll interno solo para la lista */
-    padding-right: 5px; /* Deja espacio para la barrita de scroll */
 }
 
-/* Oculta mágicamente cualquier movimiento que pase del puesto 10 */
-.history-list li:nth-child(n+11) {
+/* Oculta mágicamente cualquier movimiento que pase del puesto 5 */
+.history-list li:nth-child(n+6) {
     display: none;
 }
 

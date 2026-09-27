@@ -1,16 +1,55 @@
 <?php
+if(session_status() === PHP_SESSION_NONE){
+	session_start();
+}
+
+
+// Cobro de suscripciones en tiempo real.
+$mesActual = date('Y-m-');
+$diaHoy = (int)date('j');
+
+if(isset($_SESSION['suscripciones'])){
+	foreach($_SESSION['suscripciones'] as &$sub){
+		$ultimoCobro = $sub['ultimo_cobro'] ?? '';
+
+		if($diaHoy >= $sub['dia'] && $ultimoCobro !== $mesActual){
+			$montoArs = $sub['usd'] * 1350.50;
+
+			if(!isset($_SESSION['gastos'])) $_SESSION['gastos'] = 0;
+			$_SESSION['gastos'] += $montoArs;
+
+			if(!isset($_SESSION['categorias'])) $_SESSION['categorias'] = [];
+			$_SESSION['categorias']['Servicios'] = ($_SESSION['categorias']['Servicios'] ?? 0) + $montoArs;
+
+			if(!isset($_SESSION['movimientos'])) $_SESSION['movimientos'] = [];
+			$_SESSION['movimientos'][] = [
+				'tipo' => 'gasto',
+				'monto' => $montoArs,
+				'categoria' => 'Servicios',
+				'descripcion' => 'Sub: ' . $sub['plataforma'],
+				'metodo_pago' => 'efectivo',
+				'fecha' => date('Y-m-') . str_pad($sub['dia'], 2, '0', STR_PAD_LEFT) . ' 10:00:00'	
+			];
+
+			$sub['ultimo_cobro'] = $mesActual;
+		}
+	}
+	unset($sub);
+}
+
+
+
+
 // Leemos los totales acumulados en la memoria del servidor (o 0 si está vacío)
 $gastos = $_SESSION['gastos'] ?? 0;
 $ingresos = $_SESSION['ingresos'] ?? 0;
 $ahorro = $ingresos - $gastos;
-
 // Formateamos los números
 $gastosFmt = '$ ' . number_format($gastos, 0, ',', '.');
 $ingresosFmt = '$ ' . number_format($ingresos, 0, ',', '.');
 $claseAhorro = ($ahorro >= 0) ? 'positive' : 'negative';
 $signoAhorro = ($ahorro >= 0) ? '+ $' : '- $';
 $ahorroFmt = $signoAhorro . ' ' . number_format(abs($ahorro), 0, ',', '.');
-
 
 // Inicializamos las categorías manteniendo el orden exacto de los colores
 if (!isset($_SESSION['categorias'])) {
@@ -23,6 +62,13 @@ if (!isset($_SESSION['categorias'])) {
 
 // Convertimos el array en una lista separada por comas (ej: "0,0,1500,0...")
 $datosGrafico = implode(',', array_values($_SESSION['categorias']));
+ 
+$todosMovimientos = $_SESSION['movimientos'] ?? [];
+usort($todosMovimientos, function($a, $b){
+	return strtotime($b['fecha']) - strtotime($a['fecha']);
+});
+
+$ultimosMovimientos = array_slice($todosMovimientos, 0, 5);
 ?>
 
 <div class="summary-cards">
@@ -66,7 +112,26 @@ $datosGrafico = implode(',', array_values($_SESSION['categorias']));
     <div class="panel history-panel">
         <h3>Últimos movimientos</h3>
         <ul class="history-list">
-         
+        	<?php if (empty($ultimosMovimientos)): ?>
+        	    <li id="empty-history-msg" style="color: #888; font-size: 14px; text-align: center; padding: 20px 0;">No hay movimientos recientes.</li>
+        	<?php else: ?>
+        	    <?php foreach ($ultimosMovimientos as$mov): 
+        	        $esIngreso =$mov['tipo'] === 'ingreso';
+        	        $signo =$esIngreso ? '+ $' : '-$';
+        	        $claseMonto =$esIngreso ? 'positive' : 'negative';
+        	        $metodoTxt =$mov['metodo_pago'] !== 'efectivo' ? '(Crédito)' : '';
+        	    ?>
+        	        <li>
+        	            <div class="history-info">
+        	                <strong><?= htmlspecialchars($mov['descripcion']) ?></strong>
+        	                <span><?= htmlspecialchars($mov['categoria']) ?> <?=$metodoTxt ?></span>
+        	            </div>
+        	            <div class="history-amount <?= $claseMonto ?>">
+        	                <?= $signo ?> <?= number_format($mov['monto'], 2, ',', '.') ?>
+        	            </div>
+        	        </li>
+        	    <?php endforeach; ?>
+        	<?php endif; ?>
         </ul>
     </div>
 </div>

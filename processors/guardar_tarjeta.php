@@ -12,6 +12,13 @@ if (!isset($_SESSION['tarjetas'])) {
     $_SESSION['tarjetas'] = [];
 }
 
+foreach ($_SESSION['tarjetas'] as $t) {
+    if ($t['marca'] === $marca && $t['numeros'] === $numeros) {
+        echo "<script>alert('Esta tarjeta ya está registrada en tu cuenta.');</script>";
+        exit;
+    }
+}
+
 // Creamos el array de la nueva tarjeta
 $nuevaTarjeta = [
     'marca' => $marca,
