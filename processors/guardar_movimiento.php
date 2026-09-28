@@ -92,7 +92,10 @@ $totalIngresosStr = '$ ' . number_format($_SESSION['ingresos'], 0, ',', '.');
 $claseAhorro = ($baseAhorro >= 0) ? 'positive' : 'negative';
 $signoAhorro = ($baseAhorro >= 0) ? '+ $' : '- $';
 $totalAhorroStr = $signoAhorro . ' ' . number_format(abs($baseAhorro), 0, ',', '.');
-$totalDeudaStr = '- $ ' . number_format($_SESSION['deuda'], 0, ',','.');
+$deudaActual = $_SESSION['deuda'] ?? 0;
+$claseDeuda = ($deudaActual == 0) ? 'positive' : 'negative';
+$signoDeuda = ($deudaActual == 0) ? '$' : '- $';
+$totalDeudaStr = $signoDeuda . ' ' . number_format($deudaActual, 0, ',', '.');
 $limiteTotal = isset($_SESSION['tarjetas']) ? array_sum(array_column($_SESSION['tarjetas'], 'limite')) : 0;
 $totalLimiteStr = '$ ' . number_format($limiteTotal, 0, ',', '.');
 ?>
@@ -112,7 +115,7 @@ $totalLimiteStr = '$ ' . number_format($limiteTotal, 0, ',', '.');
 <p id="total-gastado" class="amount" hx-swap-oob="true"><?= $totalGastadoStr ?></p>
 <p id="total-ingresos" class="amount" hx-swap-oob="true"><?= $totalIngresosStr ?></p>
 <p id="total-ahorro" class="amount <?= $claseAhorro ?>" hx-swap-oob="true"><?= $totalAhorroStr ?></p>
-<p id="deuda-total" class="amount negative" hx-swap-oob="true"><?= $totalDeudaStr ?></p>
+<p id="deuda-total" class="amount <?= $claseDeuda ?>" hx-swap-oob="true"><?= $totalDeudaStr ?></p>
 <p id="limite-total" class="amount" hx-swap-oob="true"><?= $totalLimiteStr ?></p>
 <li id="empty-history-msg" hx-swap-oob="true" style="display: none;"></li>
 

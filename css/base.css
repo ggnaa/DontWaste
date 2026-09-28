@@ -1,20 +1,31 @@
-*{
+* {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
 
-body{
+body {
 	overflow: hidden;
 	background-color: #F4F7F6;
 	height: 100vh;
 	width: 100vw;
 }
 
-.app-container{
+/* === EL TRUCO PARA LOS SELECTS Y SCROLLBARS NATIVOS === */
+.dark-theme {
+    color-scheme: dark;
+}
+
+.app-container {
 	display: flex;
 	height: 100%;
 	width: 100%;
+    background-color: #F4F7F6;
+    transition: background-color 0.3s ease;
+}
+
+.dark-theme.app-container {
+    background-color: #0f1115;
 }
 
 .main-wrapper {
@@ -26,7 +37,17 @@ body{
 
 .content {
     padding: 30px;
-    background-color: #F4F7F6;
+    background-color: transparent;
     flex: 1;
     overflow-y: auto;
+}
+
+/* === EL TRUCO PARA LOS SELECTS Y EL FONDO === */
+body.dark-theme {
+    color-scheme: dark;
+    background-color: #0f1115;
+}
+
+body.dark-theme .app-container {
+    background-color: #0f1115;
 }

@@ -19,7 +19,7 @@ $ingresosActuales = $_SESSION['ingresos'] ?? 0;
 $ahorroActual = $ingresosActuales - $gastosActuales;
 
 if($montoArs > $ahorroActual){
-	echo "<script>alert('Fondos insuficientes. Necesitás $ )" . number_format($montoArs, 2, ',', '.') . " ARS pero tu saldo disponible es de $ " . number_format($ahorroActual, 2, ',', '.') . " ARS');</script>";
+	echo "<script>alert('Fondos insuficientes. Necesitás $ " . number_format($montoArs, 2, ',', '.') . " ARS pero tu saldo disponible es de $ " . number_format($ahorroActual, 2, ',', '.') . " ARS');</script>";
 	include '../components/inversiones_content.php';
 	exit;
 }

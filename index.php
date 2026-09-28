@@ -1,46 +1,101 @@
 <?php
-// Iniciamos la sesión ANTES de que se imprima cualquier HTML
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Si la URL trae la orden de reset, destruimos la memoria
 if (isset($_GET['action']) && $_GET['action'] === 'reset') {
     $_SESSION = array();
-    session_destroy();
     
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
+    session_destroy();
     header("Location: index.php");
     exit;
 }
+
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre_inicial'])){
+	$_SESSION['nombre_usuario'] = trim($_POST['nombre_inicial']);
+	if(empty($_SESSION['nombre_usuario'])){
+		$_SESSION['nombre_usuario'] = 'Usuario Demo';
+	}
+	header("Location: index.php");
+	exit;
+}
+
+$mostrarLanding = !isset($_SESSION['nombre_usuario']);
 ?>
+
 <?php require 'components/header.php'; ?>
 
 <script>
-        // Este código se ejecuta antes de que el usuario vea la página
-        // Comprobamos si es la primera vez que entra en esta pestaña
-        if (!sessionStorage.getItem('pagina_cargada')) {
-            // Guardamos la marca en el navegador de que ya entró
-            sessionStorage.setItem('pagina_cargada', 'true');
-            
-            // Forzamos el reset en PHP
-            window.location.href = "index.php?action=reset";
-        }
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+    }
+</script>
 
-        // DETECTAR F5: Si el usuario recarga la página, borramos la marca y recargamos con reset
-        window.addEventListener('beforeunload', function () {
-            // Al salir o recargar, borramos la marca para que el próximo inicio ejecute el reset
-            sessionStorage.removeItem('pagina_cargada');
-        });
-    </script>
+<?php if ($mostrarLanding): ?>
+	<div x-data="{ darkMode: localStorage.getItem('theme') === 'dark' }" style="min-height: 100vh; display: flex; flex-direction: column;">
+	        <!-- Fondo Animado -->
+	        <div class="landing-bg">
+	            <div class="orb orb-1"></div>
+	            <div class="orb orb-2"></div>
+	        </div>
+	    
+	        <!-- Botón Dark Mode -->
+	        <div style="display: flex; justify-content: flex-end; padding: 30px;">
+	            <button @click="darkMode = !darkMode; localStorage.setItem('theme', darkMode ? 'dark' : 'light'); darkMode ? document.body.classList.add('dark-theme') : document.body.classList.remove('dark-theme')" style="background: none; border: none; cursor: pointer; padding: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; backdrop-filter: blur(5px);">
+	                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary" style="color: #333;">
+	                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+	                </svg>
+	            </button>
+	        </div>
+	    
+	        <!-- CONTENEDOR CENTRAL RECUPERADO (Este es el que centra todo) -->
+	        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; gap: 40px;">
+	        
+	            <div class="glass-card fade-up" style="max-width: 650px;">
+	                <h1 class="text-primary" style="font-size: 32px; color: #178A40; margin-bottom: 20px; line-height: 1.3;">¿Alguna vez sentiste que no estás al tanto de tu dinero?</h1>
+	                <p class="text-secondary" style="font-size: 18px; color: #666; margin-bottom: 5px;">¿No sabés cuánto ahorraste el mes pasado?</p>
+	                <p class="text-dark" style="font-size: 18px; font-weight: bold; color: #333;">Este lugar es para vos.</p>
+	            </div>
+	        
+	            <!-- Formulario con las clases de animación nuevas -->
+	            <form method="POST" action="index.php" class="fade-up delay-1" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
+	                <input type="text" name="nombre_inicial" class="landing-input" placeholder="Ingresá tu nombre de usuario" required maxlength="12" autocomplete="off">
+	                <button type="submit" class="landing-btn">Empezar</button>
+	            </form>
+	        
+	            <div class="glass-card fade-up delay-2" style="max-width: 500px; padding: 25px;">
+	                <p class="text-secondary" style="color: #666; font-size: 15px; margin: 0; line-height: 1.5;">Un ecosistema financiero minimalista, privado y sin bases de datos externas. Toda tu información vive de forma segura en la memoria de tu navegador.</p>
+	            </div>
+	            
+	        </div>
+	        <!-- FIN DEL CONTENEDOR CENTRAL -->
+	    
+	        <!-- Footer -->
+	        <div class="text-secondary" style="text-align: center; padding: 20px; color: #888; font-size: 13px;">
+	            &copy; <?= date('Y') ?> Tu SaaS Financiero. Todos los derechos reservados.
+	        </div>
+	    </div>
+</div>
+
+
+<?php else: ?>
+
 
 <div class="app-container" 
-	x-data="{ isModalOpen: false, isCardModalOpen: false, tipo: 'gasto', vistaActual: 'dashboard', isSubModalOpen: false, isInvModalOpen: false, darkMode: false, showNotif: false}"
+	x-data="{ isModalOpen: false, isCardModalOpen: false, tipo: 'gasto', vistaActual: 'dashboard', isSubModalOpen: false, isInvModalOpen: false, darkMode: localStorage.getItem('theme') === 'dark', showNotif: false, notifRead: false}"
 	:class="darkMode ? 'dark-theme' : ''">
 	<?php require 'components/nav.php'; ?>
 
 	<div class="main-wrapper">
 		<header class="top-bar" style="display: flex; justify-content: space-between; align-items: center;">
-		    <!-- Título dinámico en lugar del buscador -->
 		    <div class="header-title">
 		        <h2 style="margin:0; color: #333; font-size: 18px; text-transform: capitalize;" x-text="vistaActual"></h2>
 		    </div>
@@ -48,38 +103,34 @@ if (isset($_GET['action']) && $_GET['action'] === 'reset') {
 		    <div class="top-bar-actions" style="display: flex; gap: 15px; align-items: center;">
 		        <button class="btn-primary" x-show="vistaActual === 'dashboard'" @click="isModalOpen = true" style="padding: 8px 15px;">+ Nuevo</button>
 		        
-		        <!-- Botón Dark Mode conectado a Alpine -->
-		        <button aria-label="Dark Mode" @click="darkMode = !darkMode" style="background: none; border: none; cursor: pointer;">
+		        <button aria-label="Dark Mode" @click="darkMode = !darkMode; localStorage.setItem('theme', darkMode ? 'dark' : 'light'); darkMode ? document.body.classList.add('dark-theme') : document.body.classList.remove('dark-theme')" style="background: none; border: none; cursor: pointer;">
 		            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 		                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
 		            </svg>
 		        </button>
 		        
-		        <!-- Contenedor relativo para el Dropdown de Notificaciones -->
 		        <div style="position: relative;">
-		            <button aria-label="Notificaciones" @click="showNotif = !showNotif" style="background: none; border: none; cursor: pointer; position: relative;">
+		           <button aria-label="Notificaciones" @click="showNotif = !showNotif; notifRead = true" style="background: none; border: none; cursor: pointer; position: relative;">
 		                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 		                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
 		                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
 		                </svg>
-		                <!-- Puntito rojo de aviso -->
 		                <?php if(isset($_SESSION['suscripciones']) && count($_SESSION['suscripciones']) > 0): ?>
-		                    <span style="position: absolute; top: -2px; right: -2px; width: 10px; height: 10px; background: red; border-radius: 50%;"></span>
+		                    <span x-show="!notifRead" style="position: absolute; top: -2px; right: -2px; width: 10px; height: 10px; background: #E50914; border-radius: 50%;"></span>
 		                <?php endif; ?>
 		            </button>
 		
-		            <!-- Menú flotante de notificaciones -->
-		            <div x-show="showNotif" @click.away="showNotif = false" style="display: none; position: absolute; right: 0; top: 40px; background: white; width: 280px; padding: 15px; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); z-index: 100;" x-transition>
-		                <h4 style="margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; font-size: 14px;">Notificaciones</h4>
-		                <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; color: #555;">
+		            <div x-show="showNotif" @click.away="showNotif = false" class="notif-menu" style="display: none;" x-transition>
+		                <h4>Notificaciones</h4>
+		                <ul>
 		                    <?php 
 		                    $subsActivas = count($_SESSION['suscripciones'] ?? []);
 		                    if ($subsActivas > 0): ?>
-		                        <li style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #f5f5f5;">
+		                        <li>
 		                            🟢 Tienes <strong><?= $subsActivas ?> suscripciones</strong> activas con débito automático mensual.
 		                        </li>
 		                    <?php else: ?>
-		                        <li style="color: #999;">No hay notificaciones nuevas.</li>
+		                        <li style="opacity: 0.6;">No hay notificaciones nuevas.</li>
 		                    <?php endif; ?>
 		                </ul>
 		            </div>
@@ -91,7 +142,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'reset') {
 			<?php include 'components/dashboard_content.php' ; ?>
 		</main>
 	</div>
-
+	
 	<!-- EL MODAL FLOTANTE -->
 	    <!-- x-show reacciona al estado. x-cloak evita destellos al cargar. -->
 	    <div class="modal-overlay" x-show="isModalOpen" style="display: none;" x-transition.opacity>
@@ -117,7 +168,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'reset') {
 	                    </div>
 	                    <div class="form-group">
 	                        <label>Monto</label>
-	                        <input type="number" name="monto" placeholder="$ 0.00" step="0.01" required>
+	                        <input type="number" name="monto" placeholder="$ 0.00" step="0.01" min="0.01" required>
 	                    </div>
 	                </div>
 	                
@@ -145,7 +196,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'reset') {
 	
 	                <div class="form-group">
 	                    <label>Descripción / Detalle</label>
-	                    <input type="text" name="descripcion" placeholder="Ej: Cena en pizzeria...">
+	                    <input type="text" 
+	                    name="descripcion" 
+	                    :placeholder="tipo === 'gasto' ? 'Ej: Cena en pizzeria...' : 'Ej: Remuneración por servicios...'">
 	                </div>
 
 	                <div class="form-group" x-show="tipo === 'gasto'">
@@ -203,7 +256,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'reset') {
                 <div class="form-row">
                     <div class="form-group">
                         <label>Titular</label>
-                        <input type="text" name="titular" placeholder="Ej: JUAN PEREZ" required>
+                        <input type="text" 
+                        name="titular" 
+                        placeholder="Ej: JUAN PEREZ" 
+                        required
+                        oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')">
                     </div>
                     <div class="form-group">
                         <label>Vencimiento</label>
@@ -314,9 +371,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'reset') {
 	        </form>
 	    </div>
 	</div>
-    
 </div>
-
+<?php endif; ?>
 
 
 

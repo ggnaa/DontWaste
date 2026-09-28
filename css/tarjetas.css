@@ -1,4 +1,212 @@
+/* Importamos la fuente general (aunque las tarjetas usan Courier/Arial para mantener el realismo) */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
 .tarjetas-list {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+/* Base física de la tarjeta */
+.credit-card {
+    width: 340px;
+    height: 215px;
+    border-radius: 20px; /* Un poco más redondo */
+    padding: 25px;
+    color: white;
+    position: relative;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    /* Transición elástica de alta calidad */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-sizing: border-box;
+    overflow: hidden; /* Fundamental para que el brillo no se salga de los bordes */
+}
+
+/* Efecto de brillo diagonal (Luz reflejada) */
+.credit-card::before {
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: -150%; 
+    width: 100%; 
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transform: skewX(-20deg); 
+    transition: 0.5s ease;
+    z-index: 1;
+}
+
+.credit-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 45px rgba(0,0,0,0.25);
+}
+
+.credit-card:hover::before {
+    left: 150%; /* Al hacer hover, la luz cruza la tarjeta */
+}
+
+/* Gradientes modernizados según la marca */
+.credit-card.visa {
+    background: linear-gradient(135deg, #0A3D8A 0%, #1573B6 100%);
+}
+
+.credit-card.mastercard {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+}
+
+/* Detalles internos de la tarjeta */
+.card-logo {
+    font-family: 'Arial', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    font-style: italic;
+    text-align: right;
+    letter-spacing: 1px;
+    height: 30px;
+    position: relative;
+    z-index: 2; /* Para que quede arriba del brillo */
+}
+
+/* Diseño del Chip Inteligente hiperrealista */
+.card-chip {
+    width: 45px;
+    height: 35px;
+    background: linear-gradient(135deg, #ecd599 0%, #c4993a 100%);
+    border-radius: 6px;
+    margin-top: 5px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    z-index: 2;
+    box-shadow: inset 0 1px 3px rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.chip-line {
+    width: 100%;
+    height: 1px;
+    background: rgba(0,0,0,0.2);
+}
+
+.chip-main {
+    position: absolute;
+    width: 20px;
+    height: 25px;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 4px;
+    top: 5px;
+    left: 12px;
+}
+
+/* Efecto de relieve troquelado para la tipografía */
+.card-number {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 24px;
+    letter-spacing: 3px;
+    margin-top: 25px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+    position: relative;
+    z-index: 2;
+}
+
+.card-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+    z-index: 2;
+}
+
+.card-details span {
+    font-size: 10px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+.card-details p {
+    margin: 5px 0 0;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+}
+
+/* Tarjeta vacía interactiva (Añadir Nueva) - Rediseñada con Glassmorphism */
+.credit-card.add-new {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px dashed rgba(23, 138, 64, 0.4);
+    color: #178A40;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+}
+
+.credit-card.add-new:hover {
+    border-color: #178A40;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 15px 35px rgba(23, 138, 64, 0.15);
+}
+
+.credit-card.add-new::before {
+    display: none; /* Le apagamos el brillo falso a esta tarjeta específica */
+}
+
+.add-icon {
+    font-size: 44px;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+/* REGLAS ESTRUCTURALES PROTEGIDAS */
+.card-holder {
+    flex: 1; 
+    min-width: 0; 
+    padding-right: 15px; 
+}
+
+.card-holder p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.card-expires {
+    flex-shrink: 0; 
+}
+
+/* === SOPORTE PARA DARK MODE === */
+.dark-theme .credit-card {
+    /* Las tarjetas físicas proyectan sombras más oscuras en modo nocturno */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+}
+
+.dark-theme .credit-card:hover {
+    box-shadow: 0 25px 45px rgba(0,0,0,0.8);
+}
+
+.dark-theme .credit-card.add-new {
+    background: rgba(25, 27, 30, 0.4);
+    border-color: rgba(87, 227, 137, 0.3);
+    color: #57E389;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.dark-theme .credit-card.add-new:hover {
+    background: rgba(25, 27, 30, 0.8);
+    border-color: #57E389;
+    box-shadow: 0 15px 35px rgba(87, 227, 137, 0.15);
+}.tarjetas-list {
     display: flex;
     gap: 25px;
     flex-wrap: wrap;

@@ -1,119 +1,130 @@
+/* Importamos la fuente redonda */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
 .sidebar {
     display: flex;
     flex-direction: column;
-    width: 250px;
+    width: 260px;
     height: 100%;
-    background-color: #57E389;
-    padding: 30px 0;
-    border-right: 2px solid #1EB654;
+    
+    /* Reemplazamos el verde sólido por Glassmorphism */
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.02);
+    
+    padding: 40px 0;
     position: relative;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 40;
 }
 
 .profile-section {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
 }
 
+/* Avatar elástico y brillante */
 .avatar {
-    width: 90px;
-    height: 90px;
-    background-color: white;
+    width: 85px;
+    height: 85px;
+    background-color: #ffffff; /* Forzamos color exacto */
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 2px solid #178A40;
+    box-shadow: 0 10px 25px rgba(23, 138, 64, 0.15);
     cursor: pointer;
-    color: #333;
-}
-
-.gear-icon {
-    display: none;
     color: #178A40;
+    font-weight: 800;
+    font-size: 14px;
+    /* Evitamos "transition: all" y le decimos exactamente qué cosas animar */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                box-shadow 0.4s ease, 
+                background-color 0.2s ease, 
+                border-color 0.2s ease, 
+                color 0.2s ease;
 }
 
-.avatar:hover .avatar-text {
-    display: none;
+.avatar:hover {
+    transform: scale(1.08) translateY(-5px);
+    box-shadow: 0 15px 35px rgba(23, 138, 64, 0.3);
 }
 
-.avatar:hover .gear-icon {
-    display: block;
+.avatar-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80%; 
+    display: inline-block;
+    text-align: center;
 }
 
+
+
+/* Links de navegación convertidos en "Pastillas" */
 .menu-links {
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 100%;
-    gap: 45px;
+    gap: 8px; /* Ajustamos el espacio para que las pastillas queden bien agrupadas */
     flex: 1;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .menu-links a {
-    color: white;
+    color: #666;
     text-decoration: none;
-    font-size: 18px;
-    position: relative;
-    padding-bottom: 5px;
-}
-
-.menu-links a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: #178A40;
-    transition: width 0.3s ease;
-}
-
-.menu-links a:hover::after {
-    width: 100%;
-}
-
-.toggle-btn {
-    position: absolute;
-    top: 135px;
-    right: -15px;
-    width: 30px;
-    height: 30px;
-    background-color: white; 
-    border: 2px solid #1EB654;
-    border-radius: 6px;
-    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 25px;
+    margin: 0 20px;
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 0;
-    z-index: 50;
 }
 
-.toggle-btn svg {
-    transition: transform 0.3s ease;
+/* Efecto hover: desliza a la derecha suavemente */
+.menu-links a:hover {
+    background: rgba(23, 138, 64, 0.08);
+    color: #178A40;
+    transform: translateX(6px);
 }
 
-.sidebar.collapsed {
-    width: 90px;
+/* CLASE ACTIVA: Esta es la que Alpine asignará a la vista actual */
+.menu-links a.active {
+    background: #178A40;
+    color: white;
+    box-shadow: 0 8px 20px rgba(23, 138, 64, 0.3);
+    transform: translateX(6px);
 }
 
-.sidebar.collapsed .toggle-btn svg {
-    transform: rotate(180deg); 
+/* === SOPORTE PARA DARK MODE === */
+.dark-theme .sidebar {
+    background: rgba(25, 27, 30, 0.5);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.sidebar.collapsed .avatar {
-    width: 55px;
-    height: 55px;
+.dark-theme .avatar {
+    background-color: #1e1e1e;
+    color: #57E389;
+	border-color: #57E389;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
-.sidebar.collapsed .avatar-text {
-    display: none;
+.dark-theme .menu-links a { color: #aaa; }
+.dark-theme .menu-links a:hover {
+    background: rgba(87, 227, 137, 0.1);
+    color: #57E389;
 }
-
-.sidebar.collapsed .menu-links a {
-    opacity: 0;
-    visibility: hidden;
+.dark-theme .menu-links a.active {
+    background: #57E389;
+    color: #121212;
+    box-shadow: 0 8px 20px rgba(87, 227, 137, 0.2);
 }

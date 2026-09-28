@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+.config-panel {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 40px;
+}
+
+.config-title {
+    margin-top: 0;
+    border-bottom: 2px solid rgba(0,0,0,0.05);
+    padding-bottom: 20px;
+    font-size: 22px;
+}
+
+.config-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.config-input-row {
+    display: flex;
+    gap: 15px;
+}
+
+.config-input {
+    padding: 14px 20px;
+    border: 2px solid transparent;
+    border-radius: 16px;
+    flex: 1;
+    outline: none;
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    transition: all 0.3s ease;
+    font-family: 'Nunito', sans-serif;
+}
+
+.config-input:focus {
+    border-color: #178A40;
+    box-shadow: 0 8px 25px rgba(23,138,64,0.15);
+    transform: translateY(-2px);
+}
+
+.disabled-input {
+    background: rgba(0,0,0,0.03);
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.btn-save { padding: 0 25px; border-radius: 16px; }
+
+.danger-zone {
+    margin-top: 50px;
+    border: 2px solid rgba(229, 9, 20, 0.2);
+    background: rgba(229, 9, 20, 0.05);
+    padding: 25px;
+    border-radius: 20px;
+}
+
+.danger-title {
+    color: #E50914;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.danger-desc {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.btn-danger {
+    display: inline-block;
+    background-color: #E50914;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 14px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-family: 'Nunito', sans-serif;
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.2);
+}
+
+.btn-danger:hover {
+    background-color: #cc0812;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(229, 9, 20, 0.35);
+}
+
+/* === DARK MODE === */
+.dark-theme .config-title { border-bottom-color: rgba(255,255,255,0.05); }
+.dark-theme .config-input { background: rgba(0,0,0,0.4); color: white; border-color: rgba(255,255,255,0.05); }
+.dark-theme .config-input:focus { border-color: #57E389; background: rgba(0,0,0,0.6); }
+.dark-theme .disabled-input { background: rgba(0,0,0,0.2); color: #6b7280; border-color: transparent; }
+.dark-theme .danger-zone { border-color: rgba(255, 107, 107, 0.3); background: rgba(255, 107, 107, 0.05); }
+.dark-theme .danger-title { color: #ff6b6b; }
+.dark-theme .danger-desc { color: #9ca3af; }
+.dark-theme .btn-danger { background-color: #ff6b6b; color: #121212; box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2); }
+.dark-theme .btn-danger:hover { background-color: #ff8787; box-shadow: 0 8px 20px rgba(255, 107, 107, 0.35); }

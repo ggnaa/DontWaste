@@ -54,7 +54,7 @@ $claseRendimiento = $rendimientoTotal >= 0 ? 'positive' : 'negative';
 $signoRendimiento = $rendimientoTotal >= 0 ? '+ $' : '- $';
 ?>
 
-<div class="summary-cards" style="margin-top: 20px;">
+<div class="summary-cards inv-summary">
     <div class="card">
         <h3>Capital Invertido</h3>
         <p class="amount">u$s <?= number_format($inversionTotal, 2, '.', ',') ?></p>
@@ -67,60 +67,60 @@ $signoRendimiento = $rendimientoTotal >= 0 ? '+ $' : '- $';
         <h3>Rendimiento Histórico</h3>
         <p class="amount <?= $claseRendimiento ?>">
             <?= $signoRendimiento ?> <?= number_format(abs($rendimientoTotal), 2, '.', ',') ?> 
-            <span style="font-size: 16px;">(<?= number_format($rendimientoPct, 2, '.', '') ?>%)</span>
+            <span class="pct-span">(<?= number_format($rendimientoPct, 2, '.', '') ?>%)</span>
         </p>
     </div>
 </div>
 
-<div class="dashboard-grid">
+<div class="dashboard-grid inv-grid">
     <!-- Panel del Gráfico -->
-    <div class="panel chart-panel" style="flex: 1.5;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">       
+    <div class="panel chart-panel inv-chart-panel">
+        <div class="inv-chart-header">       
             <!-- Botones selectores de HTMX -->
-            <div style="display: flex; gap: 5px; background: #f0f0f0; padding: 4px; border-radius: 8px;">
+            <div class="ticker-selectors">
                 <?php 
                 $opciones = ['SPY' => 'S&P 500', 'AAPL' => 'Apple', 'MSFT' => 'Microsoft'];
                 foreach ($opciones as $ticker => $nombre): 
-                    $isActive = $tickerActivo === $ticker ? 'background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: bold;' : 'background: transparent; color: #666;';
+                    $isActiveClass = $tickerActivo === $ticker ? 'active-ticker' : '';
                 ?>
                     <button hx-get="components/inversiones_content.php?chart=<?= $ticker ?>" 
                             hx-target="#main-content" 
-                            style="border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: 0.2s; <?= $isActive ?>">
+                            class="ticker-btn <?= $isActiveClass ?>">
                         <?= $ticker ?>
                     </button>
                 <?php endforeach; ?>
             </div>
         </div>
-        <div class="chart-container" style="width: 100%; height: 300px;">
+        <div class="chart-container inv-chart-container">
             <canvas id="marketChart"></canvas>
         </div>
     </div>
 
     <!-- Panel de Mis Posiciones -->
-    <div class="panel history-panel" style="flex: 1;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0;">Mis Posiciones</h3>
-            <button class="btn-primary" @click="isInvModalOpen = true" style="padding: 6px 12px; font-size: 13px;">+ Comprar</button>
+    <div class="panel history-panel inv-history-panel">
+        <div class="inv-history-header">
+            <h3>Mis Posiciones</h3>
+            <button class="btn-primary btn-sm" @click="isInvModalOpen = true">+ Comprar</button>
         </div>
         
-        <div style="max-height: 300px; overflow-y: auto; padding-right: 5px;">
-            <ul class="history-list">
+        <div class="inv-history-scroll">
+            <ul class="history-list inv-list">
                 <?php if (empty($portfolio)): ?>
-                    <p style="color: #888; font-size: 14px; text-align: center; margin-top: 40px;">No tenés activos. Registrá tu primera compra.</p>
+                    <p class="empty-msg">No tenés activos. Registrá tu primera compra.</p>
                 <?php else: ?>
                     <?php foreach ($portfolio as $activo): 
                         $ganancia = ($activo['precio_actual'] - $activo['precio_compra']) * $activo['cantidad'];
                         $gananciaPct = (($activo['precio_actual'] - $activo['precio_compra']) / $activo['precio_compra']) * 100;
                         $claseActivo = $ganancia >= 0 ? 'positive' : 'negative';
                     ?>
-                        <li style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee;">
+                        <li class="inv-item">
                             <div class="history-info">
-                                <strong style="display: block; color: #333;"><?= htmlspecialchars($activo['ticker']) ?></strong>
-                                <span style="font-size: 12px; color: #888;"><?= htmlspecialchars($activo['nombre']) ?> (<?= $activo['cantidad'] ?> cuotas)</span>
+                                <strong><?= htmlspecialchars($activo['ticker']) ?></strong>
+                                <span><?= htmlspecialchars($activo['nombre']) ?> (<?= $activo['cantidad'] ?> cuotas)</span>
                             </div>
-                            <div style="text-align: right;">
-                                <div style="font-weight: bold; color: #333;">u$s <?= number_format($activo['precio_actual'], 2, '.', ',') ?></div>
-                                <div style="font-size: 12px; font-weight: bold; margin-top: 4px; padding: 2px 6px; border-radius: 4px; display: inline-block; color: <?= $ganancia >= 0 ? '#178A40' : '#E50914' ?>; background: <?= $ganancia >= 0 ? '#e6f6eb' : '#fdeced' ?>;">
+                            <div class="inv-amount-wrapper">
+                                <div class="inv-current-price">u$s <?= number_format($activo['precio_actual'], 2, '.', ',') ?></div>
+                                <div class="inv-pct <?= $claseActivo ?>">
                                     <?= $ganancia >= 0 ? '+' : '' ?><?= number_format($gananciaPct, 2, '.', '') ?>%
                                 </div>
                             </div>

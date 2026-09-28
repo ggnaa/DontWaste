@@ -6,6 +6,9 @@ $deudaTotal = $_SESSION['deuda'] ?? 0;
 
 $totalActivas = count($tarjetas);
 $limiteTotal = array_sum(array_column($tarjetas, 'limite'));
+
+$claseDeuda = ($deudaTotal == 0) ? 'positive' : 'negative';
+$signoDeuda = ($deudaTotal == 0) ? '$' : '- $';
 ?>
 
 <div class="summary-cards">
@@ -21,7 +24,7 @@ $limiteTotal = array_sum(array_column($tarjetas, 'limite'));
     </div>
     <div class="card">
         <h3>Deuda Pendiente (Tarjetas)</h3>
-        <p id="deuda-total" class="amount negative"> $ <?= number_format($deudaTotal, 0, ',','.') ?></p>
+        <p id="deuda-total" class="amount <?= $claseDeuda ?>"> <?= $signoDeuda ?> <?= number_format($deudaTotal, 0, ',','.') ?></p>
     </div>
 </div>
 

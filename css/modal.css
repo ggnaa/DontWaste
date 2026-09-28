@@ -1,63 +1,70 @@
-.form-group {
-	flex: 1;
-	min-width: 0;
-	display: flex;
-	flex-direction: column;
-}
+/* Importamos la fuente por si el archivo carga independientemente */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
 
-.form-group input,
-.form-group select{
-	width: 100%;
-	box-sizing: border-box;
-}
-
-/* Fondo oscuro que cubre la pantalla */
+/* Fondo oscuro que cubre la pantalla con fuerte desenfoque */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.35); /* Un poco más transparente para lucir el blur */
     z-index: 100;
     display: flex;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
-/* Caja blanca del formulario */
+/* Efecto Glassmorphism para el contenedor */
 .modal-content {
-    background-color: white;
-    width: 400px;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    width: 420px;
+    padding: 35px;
+    border-radius: 32px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1), 0 0 40px rgba(23, 138, 64, 0.05);
+    font-family: 'Nunito', sans-serif;
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .modal-header h3 {
     margin: 0;
-    color: #333;
+    color: #1f2937;
+    font-weight: 800;
+    font-size: 22px;
 }
 
+/* Interacción divertida para el botón de cerrar */
 .close-btn {
     background: transparent;
     border: none;
-    font-size: 24px;
+    font-size: 28px;
     cursor: pointer;
-    color: #999;
+    color: #9ca3af;
     line-height: 1;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
 }
 
 .close-btn:hover {
-    color: #333;
+    color: #E50914;
+    background: rgba(229, 9, 20, 0.1);
+    transform: rotate(90deg); /* Gira al pasar el mouse */
 }
 
 /* Formulario */
@@ -77,41 +84,87 @@
     flex-direction: column;
     gap: 5px;
     flex: 1;
+    min-width: 0;
 }
 
+/* Etiquetas más sutiles */
 .form-group label {
     font-size: 13px;
-    font-weight: bold;
-    color: #555;
+    font-weight: 700;
+    color: #6b7280;
+    margin-left: 5px;
 }
 
+/* Inputs como pastillas modernas */
 .form-group input, 
 .form-group select {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 20px;
+    border: 2px solid transparent; /* Transparente para la transición */
+    border-radius: 16px;
     font-size: 14px;
     outline: none;
-    transition: border-color 0.2s;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    transition: all 0.3s ease;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    color: #333;
 }
 
 .form-group input:focus, 
 .form-group select:focus {
-    border-color: #1EB654;
+    border-color: #178A40;
+    box-shadow: 0 8px 25px rgba(23,138,64,0.15);
+    transform: translateY(-2px);
 }
 
+/* Botón elástico */
 .btn-submit {
-    background-color: #178A40;
+    background: #178A40;
     color: white;
     border: none;
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 15px;
-    font-weight: bold;
+    padding: 16px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 800;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 15px;
+    box-shadow: 0 8px 20px rgba(23,138,64,0.3); 
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-family: 'Nunito', sans-serif;
 }
 
 .btn-submit:hover {
-    background-color: #147234;
+    background: #1eb654; 
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 15px 30px rgba(23,138,64,0.45); 
+}
+
+.btn-submit:active {
+    transform: translateY(2px) scale(0.98); 
+}
+
+/* === SOPORTE PARA DARK MODE === */
+.dark-theme .modal-content {
+    background: rgba(25, 27, 30, 0.85);
+    border-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .modal-header h3 { color: #f9fafb; }
+.dark-theme .form-group label { color: #9ca3af; }
+
+.dark-theme .form-group input, 
+.dark-theme .form-group select {
+    background: rgba(0,0,0,0.4); 
+    color: white; 
+    border-color: rgba(255,255,255,0.05);
+}
+
+.dark-theme .form-group input:focus, 
+.dark-theme .form-group select:focus {
+    border-color: #57E389;
+    background: rgba(0,0,0,0.6);
 }

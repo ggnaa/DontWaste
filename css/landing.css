@@ -1,0 +1,161 @@
+/* Importamos una tipografía redonda y moderna de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+.landing-bg {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    height: 100vh;
+    z-index: -1; 
+    overflow: hidden; 
+    /* Un fondo sutilmente grisáceo para que el blanco de las tarjetas resalte más */
+    background: #f4f7f6; 
+    transition: background 0.3s ease;
+    font-family: 'Nunito', sans-serif;
+}
+
+.dark-theme .landing-bg { 
+    background: #0f1115; 
+}
+	       
+/* Orbes flotantes: Colores intensos con mucha opacidad para dar el efecto de luz volumétrica */
+.orb {
+    position: absolute; 
+    border-radius: 50%; 
+    filter: blur(90px);
+    animation: float 18s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95); 
+    opacity: 0.5;
+}
+
+/* Verde institucional potente */
+.orb-1 { 
+    width: 45vw; height: 45vw; 
+    background: #178A40; 
+    top: -5vw; left: -10vw; 
+}
+
+/* Un azul/violeta vibrante para generar contraste dinámico */
+.orb-2 { 
+    width: 40vw; height: 40vw; 
+    background: #5D5FEF; 
+    bottom: -10vw; right: -5vw; 
+    animation-delay: -5s; 
+}
+
+.dark-theme .orb-1 { background: rgba(23, 138, 64, 0.35); filter: blur(120px); }
+.dark-theme .orb-2 { background: rgba(93, 95, 239, 0.25); filter: blur(120px); }
+   
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    100% { transform: translate(8vw, 4vw) scale(1.15) rotate(10deg); }
+}
+
+/* Efecto de Cristal (Glassmorphism) con más presencia y redondez */
+.glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 32px; /* Más redondo */
+    padding: 50px;
+    /* Sombra doble: Una para profundidad y otra suave con el color institucional */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.08), 0 0 40px rgba(23, 138, 64, 0.05);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.glass-card:hover {
+    box-shadow: 0 25px 60px rgba(0,0,0,0.1), 0 0 50px rgba(23, 138, 64, 0.08);
+    transform: translateY(-5px);
+}
+
+.dark-theme .glass-card {
+    background: rgba(25, 27, 30, 0.7);
+    border-color: rgba(255,255,255,0.08);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
+
+/* Inputs y Botones con interacción viva */
+.landing-input {
+    padding: 16px 28px; 
+    border-radius: 50px; 
+    border: 2px solid transparent; /* Usamos border transparente para que no salte de tamaño al hacer focus */
+    font-size: 16px; 
+    outline: none; 
+    width: 320px;
+    background: #ffffff; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+}
+
+.landing-input:focus { 
+    border-color: #178A40; 
+    box-shadow: 0 8px 25px rgba(23,138,64,0.15); 
+    transform: translateY(-2px);
+}
+
+.dark-theme .landing-input {
+    background: rgba(0,0,0,0.4); 
+    color: white; 
+    border-color: rgba(255,255,255,0.1);
+}
+
+.landing-btn {
+    padding: 16px 36px; 
+    border-radius: 50px; 
+    border: none; 
+    background: #178A40;
+    color: white; 
+    font-size: 16px; 
+    font-weight: 800; 
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(23,138,64,0.3); 
+    /* El cubic-bezier le da ese efecto de "rebote" elástico */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-family: 'Nunito', sans-serif;
+}
+
+.landing-btn:hover { 
+    background: #1eb654; /* Un verde más brillante al pasar el mouse */
+    transform: translateY(-4px) scale(1.06); /* Crece y sube */
+    box-shadow: 0 15px 30px rgba(23,138,64,0.45); 
+}
+
+.landing-btn:active {
+    transform: translateY(2px) scale(0.98); /* Se hunde al hacer clic */
+}
+   
+/* Utilidades tipográficas adaptadas a la nueva fuente */
+.text-primary { color: #178A40 !important; font-weight: 800; }
+.text-secondary { color: #6b7280 !important; font-weight: 600; }
+.text-dark { color: #1f2937 !important; font-weight: 800; }
+
+.dark-theme .text-primary { color: #57E389 !important; }
+.dark-theme .text-secondary { color: #9ca3af !important; }
+.dark-theme .text-dark { color: #f9fafb !important; }
+
+/* Para que todo el texto de la landing herede la tipografía redonda */
+.landing-bg ~ div h1, 
+.landing-bg ~ div p {
+    font-family: 'Nunito', sans-serif;
+}
+
+
+/* === ANIMACIONES DE ENTRADA === */
+.fade-up {
+    animation: fadeUpAnim 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+
+@keyframes fadeUpAnim {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
