@@ -7,6 +7,10 @@ Un dashboard financiero minimalista, *privacy-first*, que vive enteramente en la
 ---
 
 ## Demostración Visual
+<img width="1856" height="961" alt="image" src="https://github.com/user-attachments/assets/5de5ba1b-ff86-47be-8d72-4a87cbcb665e" />
+<img width="1856" height="961" alt="image" src="https://github.com/user-attachments/assets/0aad07a0-0a53-42dd-b8f4-43d7df278df6" />
+<img width="1856" height="961" alt="image" src="https://github.com/user-attachments/assets/410b353b-f0f5-458a-b19e-caa1419ce569" />
+<img width="1856" height="961" alt="image" src="https://github.com/user-attachments/assets/61b88bc4-6b18-43d8-bafe-dbb6e937680a" />
 
 ---
 
@@ -41,7 +45,7 @@ Si querés correr este proyecto en tu entorno local para revisar el código, no 
 
 1. **Cloná el repositorio:**
    ```bash
-   git clone [https://github.com/TU_USUARIO/DontWaste.git](https://github.com/TU_USUARIO/DontWaste.git)
+   git clone https://github.com/ggnaa/DontWaste.git
    cd DontWaste
    ```
 
