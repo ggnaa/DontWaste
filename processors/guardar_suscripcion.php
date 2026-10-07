@@ -3,9 +3,9 @@ if(session_status() === PHP_SESSION_NONE){
 	session_start();
 }
 
-$plataforma = $_POST['plataforma'] ?? 'Netflix';
-$dia = (int)($_POST['dia'] ?? 1);
-$usd = (float)($_POST['usd'] ?? 0);
+$plataforma = htmlspecialchars($_POST['plataforma'] ?? 'Netflix', ENT_QUOTES, 'UTF-8');
+$dia = intval($_POST['dia'] ?? 1);
+$usd = floatval($_POST['usd'] ?? 0);
 
 if(!isset($_SESSION['suscripciones'])){
 	$_SESSION['suscripciones'] = [];
