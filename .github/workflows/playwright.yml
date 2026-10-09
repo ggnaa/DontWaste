@@ -23,18 +23,33 @@ jobs:
         php-version: '8.2'
         extensions: sqlite3
 
-    # 4. Preparar el Entorno de QA (Python)
+    # 4. Preparar el Entorno de QA (Python) con Caché
     - name: Configurar Python 3.12
       uses: actions/setup-python@v5
       with:
         python-version: '3.12'
+        cache: 'pip' # ⚡ Magia 1: Guarda en caché pytest, playwright y requests
 
-    - name: Instalar dependencias de Testing
+    - name: Instalar librerías de Python
       run: |
         python -m pip install --upgrade pip
-        pip install pytest playwright pytest-playwright
-        playwright install chromium --with-deps
+        pip install pytest playwright pytest-playwright requests
 
+    - name: Recuperar caché del navegador Chromium
+      uses: actions/cache@v4
+      id: playwright-cache
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-chromium
+
+    - name: Descargar Chromium (Solo la primera vez)
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      run: playwright install chromium --with-deps
+
+    - name: Instalar dependencias del sistema operativo (Rápido)
+      if: steps.playwright-cache.outputs.cache-hit == 'true'
+      run: playwright install-deps chromium
+      
     # 5. Levantar la aplicación
     - name: Iniciar servidor PHP en segundo plano
       run: php -S localhost:8000 &
