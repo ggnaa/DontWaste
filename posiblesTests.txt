@@ -1,0 +1,41 @@
+Landing page:
+	A. 	1. Se clickea el input "Ingresá tu nombre de usuario"
+		2. Se escribe "QA tester"
+		3. Se clickea en el botón "Empezar"
+		Assert => El nombre de usuario es "QA tester" y se carga la página bien
+
+
+	B. 	1. Se clickea el input "Ingresá tu nombre de usuario"
+		2. Se pega un emoji
+		Assert => Sólamente se deberían permitir caracteres ASCII.
+
+	C. 	1. Se clickea el input "Ingresá tu nombre de usuario"
+		2. Se escribe "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+		Assert => Sólamente debería dejar escribir hasta cierto punto, luego se dejan de recibir caracteres
+
+	D. 	1. Se apreta el botón "Empezar" sin escribir nada
+		Assert => Debería pedir que se ingrese un nombre
+
+	E.  1. Se clickea en el botón del darkMode
+		Assert => Todos los componentes se deberían cambiar a su color correspondiente del darkmode sin ningun flash raro.
+
+	F.  1. Se clickea en el botón del darkmode
+		2. Se vuelve a clickear el botón del darkmode, para cambiar a lightmode
+		Assert => Todos los componentes deberían volver a su color del lightmode sin ningún flash raro.
+
+
+Dashboard:
+	A. Estado Vacío:
+	 	1. Verificar párrafo con id "total-gastado" debería ser igual a "$ 0"
+		2. Verificar párrafo con id "total-ingresos" debería ser igual a "$ 0"
+		3. Verificar párrafo con id "total-ahorro" debería ser igual a "+ $ 0"
+		4. Verificar que el canvas con id "expenseChart" esté invisible o simplemente no esté
+		5. Verificar que ningúna leyenda con la clase "legend-item" esté gris (o el color al que cambian cuando en el chart haces click y te marca qué categoría es)
+		6. Verificar que en el panel del historial aparezca el texto "No hay movimientos recientes."
+		7. Verificar que la top-bar sea visible
+		8. Verificar que la nav-bar sea visible
+		9. Apretar el botón con clase "btn-primary" que es el de darkmode, verificar que se puso el body en dark-theme.
+		10. Volver a apretar el botón con clase "btn-primary" para verificar que el body no tenga la clase dark-theme
+		11. Apretar el botón con aria-label="Notificaciones", verificar que aparece el h4 "Notificaciones" y el li con el texto "No hay notificaciones nuevas."
+
+	B. 
