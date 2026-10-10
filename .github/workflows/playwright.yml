@@ -28,12 +28,12 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.12'
-        cache: 'pip' # ⚡ Magia 1: Guarda en caché pytest, playwright y requests
+        cache: 'pip' #  Guarda en caché pytest, playwright y requests
 
     - name: Instalar librerías de Python
       run: |
         python -m pip install --upgrade pip
-        pip install pytest playwright pytest-playwright requests
+        pip install -r requirements.txt
 
     - name: Recuperar caché del navegador Chromium
       uses: actions/cache@v4
