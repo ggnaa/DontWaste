@@ -1,7 +1,7 @@
 name: CI/CD QA Automation
 
 permissions:
-    content: read
+    contents: read
 
 # 1. El Disparador (Cuándo correr)
 on:
